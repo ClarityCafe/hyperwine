@@ -2,6 +2,10 @@
 # Build Script for hyperwine
 
 BASE_DIR="$(cd `dirname $0` && pwd)"
+DATAROOTDIR="$BASE_DIR/dist" 
+EPREFIX="$BASE_DIR/dist" 
+PREFIX="$BASE_DIR/dist"
+
 
 # call submodules if we haven't already.
 git submodule add --update;
@@ -19,7 +23,7 @@ fi
 # Build step: Wine64 ##
 #######################
 cd wine64;
-./configure --libdir="$BASE_DIR/dist/lib" --disable-win16 --enable-win64 --with-x --without-cups --disable-win16 --enable-win64 --without-curses --without-capi --without-glu --without-gphoto --without-gsm --without-hal --without-ldap --without-netapi
+./configure --prefix="$PREFIX" --exec-prefix="$EPREFIX" --disable-win16 --enable-win64 --with-x --without-cups --disable-win16 --enable-win64 --without-curses --without-capi --without-glu --without-gphoto --without-gsm --without-hal --without-ldap --without-netapi
 make
 cd ..
 
@@ -27,9 +31,9 @@ cd ..
 # Build step: Wine32 ##
 #######################
 cd wine64;
-./configure --libdir="$BASE_DIR/dist/lib" --disable-win16 --with-wine64="$BASE_DIR/wine64" --with-x --without-cups --disable-win16 --enable-win64 --without-curses --without-capi --without-glu --without-gphoto --without-gsm --without-hal --without-ldap --without-netapi
+./configure --prefix="$PREFIX" --exec-prefix="$EPREFIX" --disable-win16 --with-wine64="$BASE_DIR/wine64" --with-x --without-cups --disable-win16 --enable-win64 --without-curses --without-capi --without-glu --without-gphoto --without-gsm --without-hal --without-ldap --without-netapi
 make
-make DATAROOTDIR="$BASE_DIR/dist" EPREFIX="$BASE_DIR/dist" PREFIX="$BASE_DIR/dist" install
+make install
 cd ..
 
 ############################
