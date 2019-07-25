@@ -29,7 +29,7 @@ cd ..
 cd wine64;
 ./configure --libdir="$BASE_DIR/dist/lib" --disable-win16 --with-wine64="$BASE_DIR/wine64" --with-x --without-cups --disable-win16 --enable-win64 --without-curses --without-capi --without-glu --without-gphoto --without-gsm --without-hal --without-ldap --without-netapi
 make
-make PREFIX="$BASE_DIR/dist" install
+make DATAROOTDIR="$BASE_DIR/dist" EPREFIX="$BASE_DIR/dist" PREFIX="$BASE_DIR/dist" install
 cd ..
 
 ############################
