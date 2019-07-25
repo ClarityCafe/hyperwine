@@ -4,3 +4,6 @@
 [submodule "wine64"]
 	path = wine64
 	url = https://github.com/lutris/wine
+[submodule "winetricks"]
+	path = winetricks
+	url = https://github.com/Winetricks/winetricks

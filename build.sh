@@ -29,15 +29,24 @@ cd ..
 cd wine64;
 ./configure --libdir=$HOME/projects/hyperwine/dist/lib --disable-win16 --with-wine64="$BASE_DIR/wine64" --with-x --without-cups --disable-win16 --enable-win64 --without-curses --without-capi --without-glu --without-gphoto --without-gsm --without-hal --without-ldap --without-netapi
 make
+make PREFIX="$BASE_DIR/dist" install
 cd ..
+
+############################
+# Build step: winetricks  ##
+############################
+cd winetricks
+make
+make PREFIX="$BASE_DIR/dist" install
+
 
 ######################
 # Build step: warp  ##
 ######################
 
 cd "$BASE_DIR"
-
 cp -Rf hyperwine.sh dist/
+
 
 # Grab warp-packer
 curl -Lo warp-packer https://github.com/dgiagio/warp/releases/download/v0.3.0/linux-x64.warp-packer
