@@ -8,7 +8,7 @@ DIR="$(cd "$(dirname "$0")" ; pwd -P)"
 WINE_BIN_PATH=$DIR/bin/
 WINE_LIB_PATH=$DIR/lib/
 
-
+# TODO: add a list of included binaries in $DIR/bin
 print_help() {
    echo "hyperwine is a wine distribution that packages wine into a single binary"
    echo "this is intended for Flatpak/container deployments."

@@ -31,7 +31,7 @@ cd ..
 #######################
 # Build step: Wine32 ##
 #######################
-cd wine64;
+cd wine32;
 ./configure --prefix="$PREFIX" --exec-prefix="$EPREFIX" --disable-win16 --with-wine64="$BASE_DIR/wine64" --with-x --without-cups --disable-win16 --enable-win64 --without-curses --without-capi --without-glu --without-gphoto --without-gsm --without-hal --without-ldap --without-netapi
 make
 make install

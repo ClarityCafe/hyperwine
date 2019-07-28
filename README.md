@@ -12,6 +12,74 @@ as a minimal Wine installation.
 
 By default, we remove the HAL, LDAP, 16-bit Windows and stuff you don't need.
 
-## Building/Installing
+## Building
 
-TBA
+First, you'll need to enable multiarch for your distribution. It varies per Linux distribution so consult
+your distribution's wiki to enable multiarch.
+
+If not possible, you'll need to build a chroot to build `wine32/`.
+
+### The easy way
+
+If you finally enabled multiarch, cool, now try building it the easy way
+
+```
+$ bash build.sh
+```
+Cross your fingers and wait.
+
+### The (rather) hard way
+
+If in some cases multiarch is not possible, there is another way, which is doing bit by hand.
+
+To build hyperwine, navigate to `wine64/` and run configure with these flags, and finally run `make`.
+
+*Note: set the EPREFIX and PREFIX to the root directory of your build directory.*
+
+```bash
+$ export PREFIX="$BASE_DIR/dist/"; export EPREFIX="$BASE_DIR/dist/"
+$ cd wine64;
+$ ./configure --prefix="$PREFIX" --exec-prefix="$EPREFIX" --disable-win16 --enable-win64 --with-x --without-cups --disable-win16 --enable-win64 --without-curses --without-capi --without-glu --without-gphoto --without-gsm --without-hal --without-ldap --without-netapi
+$ make
+```
+Finally walk out of `wine64`, and build `wine32/`. Same flags as before, but we'll define where we built the Wine64 binary.
+
+```bash
+$ export PREFIX="$BASE_DIR/dist/"; export EPREFIX="$BASE_DIR/dist/"
+$ cd wine32;
+$ ./configure --prefix="$PREFIX" --exec-prefix="$EPREFIX" --disable-win16 --with-wine64="$BASE_DIR/wine64" --with-x --without-cups --disable-win16 --enable-win64 --without-curses --without-capi --without-glu --without-gphoto --without-gsm --without-hal --without-ldap --without-netapi
+$ make
+$ make install
+```
+Finally, run `make install` inside winetricks.
+
+*Note: set the PREFIX to the root directory of your build directory.*
+
+```bash
+$ cd winetricks
+$ make
+$ make PREFIX="$BASE_DIR/dist" install
+```
+Then finally get `warp-packer` and package the finalized distribution. Make sure you copy `hyperwine.sh` to your build directory before packaging.
+
+```bash 
+$ cp -Rf hyperwine.sh dist/
+
+
+# Grab warp-packer
+$ curl -Lo warp-packer https://github.com/dgiagio/warp/releases/download/v0.3.0/linux-x64.warp-packer
+$ chmod +x warp-packer
+
+# you can replace --input-dir and --output directories with your own
+$ ./warp-packer --arch linux-x64 --input_dir $BUILD_DIR --exec hyperwine.sh --output "$BASE_DIR/release/hyperwine"
+
+```
+
+And that's it! You just built your version of hyperwine.
+
+Now try executing your hyperwine installation.
+
+```bash
+$ chmod +x hyperwine
+$ ./hyperwine wine --version
+```
