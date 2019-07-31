@@ -13,12 +13,16 @@ git submodule add --update;
 echo "This script assumes you have all of the build dependencies of Wine. If you don't"
 echo "Please acquire them first."
 
+sleep 5
+
 # Warn if they don't have lib32 targeting
 
 if [ ! -d /usr/lib32 ]  || [! -d /usr/lib32 ] && [! -d /usr/lib32/i386-linux-gnu ]; then
    echo "Warning: This script builds Wine with WoW64. Install 32-bit versions of the dependencies"
    echo "Or, do a chroot/LXD to build the 32-bit version manually."
 fi
+
+sleep 3
 
 #######################
 # Build step: Wine64 ##
