@@ -6,7 +6,6 @@
 HYPERWINE_VERSION="0.0.0"
 DIR="$(cd "$(dirname "$0")" ; pwd -P)"
 WINE_BIN_PATH=$DIR/bin/
-WINE_LIB_PATH=$DIR/lib/
 
 # TODO: add a list of included binaries in $DIR/bin
 print_help() {
@@ -22,7 +21,7 @@ if [ -n "$1" ]; then
    # call the wine binary its trying to call along with args.
    exec "$WINE_BIN_PATH/$1" "$@"
  else
-    printf "No such command $1\n\n"
+    printf "No such command %s\n\n" "$1"
     print_help
     exit 1;
   fi
