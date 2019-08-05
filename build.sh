@@ -27,15 +27,15 @@ chroot_exec() {
 
 echo "Running Git submodule update. This shouldn't take long."
 # call submodules if we haven't already.
-git submodule add --update
+git submodule update --init --recursive
 
 
 echo "Setting up chroots, this may take a while."
 
 sleep 3
 
-mkdir "$CHROOT32_DIR"
-mkdir "$CHROOT64_DIR"
+mkdir -p "$CHROOT32_DIR"
+mkdir -p "$CHROOT64_DIR"
 
 sudo debootstrap --arch i386 buster "$CHROOT32_DIR" http://deb.debian.org/debian/
 sudo debootstrap --arch amd64 buster "$CHROOT64_DIR" http://deb.debian.org/debian/
