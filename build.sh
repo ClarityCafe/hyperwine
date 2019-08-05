@@ -11,7 +11,7 @@ if [ -z "$(command -v debootstrap)" ]; then
   echo "debootstrap not found! This script requires debootstrap" && exit 1;
 fi
 
-if [ -z "$(ls /usr/bin | grep qemu)" ]; then
+if [ -z "$(command -v qemu-i386-static)" ]; then
   echo "QEMU not found! This script requires QEMU" && exit 1;
 fi
 
