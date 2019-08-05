@@ -14,23 +14,24 @@ By default, we remove the HAL, LDAP, 16-bit Windows and stuff you don't need.
 
 ## Building
 
-First, you'll need to enable multiarch for your distribution. It varies per Linux distribution so consult
-your distribution's wiki to enable multiarch.
-
-If not possible, you'll need to build a chroot to build `wine32/`.
 
 ### The easy way
 
-If you finally enabled multiarch, cool, now try building it the easy way
+Just run this convinience script.
 
 ```
 $ bash build.sh
 ```
 Cross your fingers and wait.
 
+**Note: Build Script requires QEMU Static, proot and debootstrap. Install them first if you haven't yet.**
+
 ### The (rather) hard way
 
-If in some cases multiarch is not possible, there is another way, which is doing bit by hand.
+If the script didn't work, there is a nother way to do it, which is doing bit by hand.
+
+First, you'll need to enable multiarch for your distribution. It varies per Linux distribution so consult
+your distribution's wiki to enable multiarch.
 
 To build hyperwine, navigate to `wine64/` and run configure with these flags, and finally run `make`.
 
