@@ -5,24 +5,18 @@ set -eo pipefail
 BASE_DIR="$(cd "$(dirname "$0")" && pwd)"
 EPREFIX="/mnt/hyperwine/dist" 
 PREFIX="/mnt/hyperwine/dist"
-CHROOT32_DIR="$BASE_DIR/.chroot/32"
-CHROOT64_DIR="$BASE_DIR/.chroot/64"
+CHROOT32_DIR="$BASE_DIR/chroot/32"
+CHROOT64_DIR="$BASE_DIR/chroot/64"
+
 
 if [ -z "$(command -v debootstrap)" ]; then
   echo "debootstrap not found! This script requires debootstrap" && exit 1
 fi
 
-if [ -z "$(command -v qemu-i386-static)" ]; then
-  echo "QEMU not found! This script requires QEMU" && exit 1
-fi
-
-if [ -z "$(command -v proot)" ]; then
-  echo "proot not found! This script requires proot" && exit 1
-fi
 
 # chroot_exec takes $1 as the rootfs path. the rest is taken as arguments for the shell.
 chroot_exec() {
-    proot --rootfs="$1" -0 -q "/bin/bash -c $*"
+    sudo chroot "$1" "/bin/bash -c $*"
 }
 
 echo "Running Git submodule update. This shouldn't take long."
@@ -34,17 +28,22 @@ echo "Setting up chroots, this may take a while."
 
 sleep 3
 
-mkdir -p "$CHROOT32_DIR"
-mkdir -p "$CHROOT64_DIR"
+if [ ! -d "$CHROOT32_DIR" ] && [ ! -d "$CHROOT64_DIR" ]; then
 
-sudo debootstrap --arch i386 buster "$CHROOT32_DIR" http://deb.debian.org/debian/
-sudo debootstrap --arch amd64 buster "$CHROOT64_DIR" http://deb.debian.org/debian/
+  mkdir -p "$CHROOT32_DIR"
+  mkdir -p "$CHROOT64_DIR"
 
-chroot_exec "$CHROOT32_DIR" apt-get install -y xserver-xorg-dev libfreetype6-dev && mkdir /mnt/hyperwine
-chroot_exec "$CHROOT64_DIR" apt-get install -y xserver-xorg-dev libfreetype6-dev && mkdir /mnt/hyperwine
+  sudo debootstrap --arch i386 buster "$CHROOT32_DIR" http://deb.debian.org/debian/
+  sudo debootstrap --arch amd64 buster "$CHROOT64_DIR" http://deb.debian.org/debian/
 
-sudo mount --bind "$BASE_DIR" "$CHROOT32_DIR/mnt/hyperwine"
-sudo mount --bind "$BASE_DIR" "$CHROOT64_DIR/mnt/hyperwine"
+  chroot_exec "$CHROOT32_DIR" apt-get install -y xserver-xorg-dev libfreetype6-dev && mkdir /mnt/hyperwine
+  chroot_exec "$CHROOT64_DIR" apt-get install -y xserver-xorg-dev libfreetype6-dev && mkdir /mnt/hyperwine
+
+  sudo mount --bind "$BASE_DIR" "$CHROOT32_DIR/mnt/hyperwine"
+  sudo mount --bind "$BASE_DIR" "$CHROOT64_DIR/mnt/hyperwine"
+else 
+  echo "Chroot already initialized. Skipping."
+fi
 
 echo "Chroot done. Now building hyperwine:"
 echo "Step [1/3] - Build WINE64"
