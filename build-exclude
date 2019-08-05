@@ -1,0 +1,15 @@
+# These are files to be ommitted out of build time. Only used by build.sh.
+
+/bin/function_grep.pl
+/bin/wine64reloader
+/bin/winebuild
+/bin/winedbg
+/bin/winegcc
+/bin/winemine
+/bin/wrc
+/bin/winecpp
+/bin/wineg++
+/bin/winemaker
+/include
+/share/man
+/share/applications

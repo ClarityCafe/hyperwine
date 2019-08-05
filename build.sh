@@ -90,6 +90,16 @@ cd "$BASE_DIR" || exit 1
 cp -Rf hyperwine.sh dist/
 
 
+# Read build-exclude, remove all the files listed in there.
+# Comments are ommitted out of $line.
+
+cat build-exclude || exit 1 | while read -r line; do
+  [ -z "${line##*#*}" ] && continue
+  echo "removing $BASE_DIR/dist/$line"
+  rm -rf "$BASE_DIR/dist/$line"
+done;
+
+
 # Grab warp-packer
 curl -Lo warp-packer https://github.com/dgiagio/warp/releases/download/v0.3.0/linux-x64.warp-packer
 chmod +x warp-packer
