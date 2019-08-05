@@ -1,5 +1,6 @@
 #!/bin/sh
 # Build Script for hyperwine
+set -eo pipefail
 
 BASE_DIR="$(cd "$(dirname "$0")" && pwd)"
 EPREFIX="/mnt/hyperwine/dist" 
