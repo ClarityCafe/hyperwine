@@ -36,14 +36,14 @@ sleep 3
 mkdir "$CHROOT32_DIR"
 mkdir "$CHROOT64_DIR"
 
-debootstrap --arch i386 buster "$CHROOT32_DIR" http://deb.debian.org/debian/
-debootstrap --arch amd64 buster "$CHROOT64_DIR" http://deb.debian.org/debian/
+sudo debootstrap --arch i386 buster "$CHROOT32_DIR" http://deb.debian.org/debian/
+sudo debootstrap --arch amd64 buster "$CHROOT64_DIR" http://deb.debian.org/debian/
 
 chroot_exec "$CHROOT32_DIR" apt-get install -y xserver-xorg-dev libfreetype6-dev && mkdir /mnt/hyperwine
 chroot_exec "$CHROOT64_DIR" apt-get install -y xserver-xorg-dev libfreetype6-dev && mkdir /mnt/hyperwine
 
-mount --bind "$BASE_DIR" "$CHROOT32_DIR/mnt/hyperwine"
-mount --bind "$BASE_DIR" "$CHROOT64_DIR/mnt/hyperwine"
+sudo mount --bind "$BASE_DIR" "$CHROOT32_DIR/mnt/hyperwine"
+sudo mount --bind "$BASE_DIR" "$CHROOT64_DIR/mnt/hyperwine"
 
 echo "Chroot done. Now building hyperwine:"
 echo "Step [1/3] - Build WINE64"
@@ -95,8 +95,7 @@ cp -Rf hyperwine.sh dist/
 
 cat build-exclude || exit 1 | while read -r line; do
   [ -z "${line##*#*}" ] && continue
-  echo "removing $BASE_DIR/dist/$line"
-  rm -rf "$BASE_DIR/dist/$line"
+  rm -rfv "$BASE_DIR/dist/$line"
 done;
 
 
