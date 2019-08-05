@@ -4,8 +4,8 @@ dist: xenial
 
 install:
   - sudo apt update && sudo apt install -y proot qemu-user-static debootstrap
-  - if [ ! -n "$TRAVIS_TAG" ]; sed -i "s/HYPERWINE_VERSION=\"0.0.0\"/HYPERWINE_VERSION=\"$TRAVIS_COMMIT\"/g" hyperwine.sh;
-  - if [ -n "$TRAVIS_TAG" ]; sed -i "s/HYPERWINE_VERSION=\"0.0.0\"/HYPERWINE_VERSION=\"$TRAVIS_TAG\"/g" hyperwine.sh;
+  - if [ ! -n "$TRAVIS_TAG" ]; then sed -i "s/HYPERWINE_VERSION=\"0.0.0\"/HYPERWINE_VERSION=\"$TRAVIS_COMMIT\"/g" hyperwine.sh; fi
+  - if [ -n "$TRAVIS_TAG" ]; then sed -i "s/HYPERWINE_VERSION=\"0.0.0\"/HYPERWINE_VERSION=\"$TRAVIS_TAG\"/g" hyperwine.sh; fi
 
 script:
   - bash build.sh
