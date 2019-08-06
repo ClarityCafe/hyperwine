@@ -16,7 +16,7 @@ fi
 
 # chroot_exec takes $1 as the rootfs path. the rest is taken as arguments for the shell.
 chroot_exec() {
-    sudo chroot "$1" "/bin/bash -c ${@:2}"
+    sudo chroot "$1" "/bin/bash -c ${*:2}"
 }
 
 echo "Running Git submodule update. This shouldn't take long."
