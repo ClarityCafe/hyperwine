@@ -9,11 +9,11 @@ CHROOT32_DIR="$BASE_DIR/chroot/32"
 CHROOT64_DIR="$BASE_DIR/chroot/64"
 
 if [ -z "$(command -v proot)" ]; then
-   echo "proot not found! This script require proot" && exit 1
+   echo "proot not found! This script requires proot" && exit 1
 fi
 
 if [ -z "$(command -v qemu-system-i386)" ]; then
-   echo "QEMU not found! This script require QEMU" && exit 1
+   echo "QEMU not found! This script requires QEMU" && exit 1
 fi
 
 if [ -z "$(command -v debootstrap)" ]; then
@@ -23,7 +23,7 @@ fi
 
 # chroot_exec takes $1 as the rootfs path. the rest is taken as arguments for the shell.
 chroot_exec() {
-    proot -S "$1" -b /dev/ -b /sys/ -b /proc/ -0 -q "/bin/sh -c ${*:2}"
+    proot -S "$1" -0 -q "/bin/sh -c ${*:2}"
 }
 
 echo "Running Git submodule update. This shouldn't take long."

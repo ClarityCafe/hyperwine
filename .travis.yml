@@ -3,7 +3,7 @@ language: generic
 dist: xenial
 
 install:
-  - sudo apt-get update && sudo apt-get install -y debootstrap
+  - sudo apt-get update && sudo apt-get install -y debootstrap proot qemu-user-static
   - if [ ! -n "$TRAVIS_TAG" ]; then sed -i "s/HYPERWINE_VERSION=\"0.0.0\"/HYPERWINE_VERSION=\"$TRAVIS_COMMIT\"/g" hyperwine.sh; fi
   - if [ -n "$TRAVIS_TAG" ]; then sed -i "s/HYPERWINE_VERSION=\"0.0.0\"/HYPERWINE_VERSION=\"$TRAVIS_TAG\"/g" hyperwine.sh; fi
 
