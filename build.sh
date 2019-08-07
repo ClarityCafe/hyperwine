@@ -12,8 +12,8 @@ if [ -z "$(command -v proot)" ]; then
    echo "proot not found! This script requires proot" && exit 1
 fi
 
-if [ -z "$(command -v qemu-system-i386)" ]; then
-   echo "QEMU not found! This script requires QEMU" && exit 1
+if [ -z "$(command -v qemu-i386-static)" ]; then
+   echo "QEMU Static not found! This script requires QEMU Static" && exit 1
 fi
 
 if [ -z "$(command -v debootstrap)" ]; then
