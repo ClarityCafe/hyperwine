@@ -24,7 +24,7 @@ fi
 # chroot_exec takes $1 as the rootfs path. the rest is taken as arguments for the shell.
 chroot_exec() {
     if [ "$1" = "$CHROOT32_DIR" ]; then
-      proot -S "$1" -0 /bin/sh -c "${*:2}" | while read -r line; do
+      proot -S "$1" -0 /bin/qemu-i386-static /bin/sh -c "${*:2}" | while read -r line; do
         echo "[CHROOT-32] $line"
       done
     else
@@ -82,9 +82,14 @@ if [ ! -d "$CHROOT32_DIR" ] && [ ! -d "$CHROOT64_DIR" ]; then
   echo "Copying QEMU binary to $CHROOT32_DIR. Please Authorize."
   sudo cp -Rf "$(command -v qemu-i386-static)" "$CHROOT32_DIR/bin"
 
-  chroot_exec "$CHROOT32_DIR" apt-get install -y xserver-xorg-dev libfreetype6-dev && mkdir /mnt/hyperwine
-  chroot_exec "$CHROOT64_DIR" apt-get install -y xserver-xorg-dev libfreetype6-dev && mkdir /mnt/hyperwine
+  chroot_exec "$CHROOT32_DIR" apt-get install -y xserver-xorg-dev libfreetype6-dev
+  chroot_exec "$CHROOT64_DIR" apt-get install -y xserver-xorg-dev libfreetype6-dev
 
+  echo "Mounting hyperwine..."
+
+  mkdir "$CHROOT32_DIR/mnt/hyperwine"
+  mkdir "$CHROOT64_DIR/mnt/hyperwine"
+  
   mount --bind "$BASE_DIR" "$CHROOT32_DIR/mnt/hyperwine"
   mount --bind "$BASE_DIR" "$CHROOT64_DIR/mnt/hyperwine"
 else

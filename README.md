@@ -24,6 +24,8 @@ $ bash build.sh
 ```
 Cross your fingers and wait.
 
+**PLEASE BE NOTED - PRoot in Ubuntu sources is incredibly broken, use the [Debian](http://ftp.us.debian.org/debian/pool/main/p/proot/proot_5.1.0-1.2_amd64.deb) version instead!!**
+
 **Note: Build Script requires QEMU Static, proot and debootstrap. Install them first if you haven't yet.**
 
 ### The (rather) hard way
