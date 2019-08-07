@@ -15,3 +15,7 @@ script:
 
 notifications:
   email: false
+
+cache:
+  directories:
+    - ./chroots/
