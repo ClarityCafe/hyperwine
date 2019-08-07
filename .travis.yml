@@ -2,15 +2,20 @@ os: linux
 language: generic
 dist: xenial
 
+addons:
+  apt:
+    update: true
+
+before_install:
+  - wget -qO /tmp/proot.dpkg http://ftp.us.debian.org/debian/pool/main/p/proot/proot_5.1.0-1.2_amd64.deb && sudo apt-get install -y /tmp/proot.dpkg
+  - sudo apt-get install -y debootstrap qemu-user-static binfmt-support
+
 install:
-  - sudo apt-get update && sudo apt-get install -y debootstrap proot qemu-user-static binfmt-support
   - if [ ! -n "$TRAVIS_TAG" ]; then sed -i "s/HYPERWINE_VERSION=\"0.0.0\"/HYPERWINE_VERSION=\"$TRAVIS_COMMIT\"/g" hyperwine.sh; fi
   - if [ -n "$TRAVIS_TAG" ]; then sed -i "s/HYPERWINE_VERSION=\"0.0.0\"/HYPERWINE_VERSION=\"$TRAVIS_TAG\"/g" hyperwine.sh; fi
 
 script:
   - bash build.sh
-
-         
 
 
 notifications:
