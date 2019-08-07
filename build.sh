@@ -89,9 +89,9 @@ if [ ! -d "$CHROOT32_DIR" ] && [ ! -d "$CHROOT64_DIR" ]; then
 
   mkdir "$CHROOT32_DIR/mnt/hyperwine"
   mkdir "$CHROOT64_DIR/mnt/hyperwine"
-  
-  mount --bind "$BASE_DIR" "$CHROOT32_DIR/mnt/hyperwine"
-  mount --bind "$BASE_DIR" "$CHROOT64_DIR/mnt/hyperwine"
+
+  sudo mount --bind "$BASE_DIR" "$CHROOT32_DIR/mnt/hyperwine"
+  sudo mount --bind "$BASE_DIR" "$CHROOT64_DIR/mnt/hyperwine"
 else
   echo "Chroot already initialized. Running additional setup."
 
