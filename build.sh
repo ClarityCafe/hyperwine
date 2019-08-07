@@ -55,7 +55,7 @@ if [ ! -d "$CHROOT32_DIR" ] && [ ! -d "$CHROOT64_DIR" ]; then
 
   sudo mount --bind "$BASE_DIR" "$CHROOT32_DIR/mnt/hyperwine"
   sudo mount --bind "$BASE_DIR" "$CHROOT64_DIR/mnt/hyperwine"
-else 
+elif [ -d "$CHROOT32_DIR" ] && [ -d "$CHROOT64_DIR" ]; then
   echo "Chroot already initialized. Skipping."
 fi
 
