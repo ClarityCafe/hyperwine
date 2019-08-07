@@ -47,7 +47,8 @@ if [ ! -d "$CHROOT32_DIR" ] && [ ! -d "$CHROOT64_DIR" ]; then
   sudo debootstrap --arch i386 buster "$CHROOT32_DIR" http://deb.debian.org/debian/
   sudo debootstrap --arch amd64 buster "$CHROOT64_DIR" http://deb.debian.org/debian/
 
-  cp -Rf "$(command -v qemu-i386-static)" "$CHROOT32_DIR/bin"
+  echo "Copying QEMU binary to $CHROOT32_DIR. Please Authorize."
+  sudo cp -Rf "$(command -v qemu-i386-static)" "$CHROOT32_DIR/bin"
 
   chroot_exec "$CHROOT32_DIR" apt-get install -y xserver-xorg-dev libfreetype6-dev && mkdir /mnt/hyperwine
   chroot_exec "$CHROOT64_DIR" apt-get install -y xserver-xorg-dev libfreetype6-dev && mkdir /mnt/hyperwine
