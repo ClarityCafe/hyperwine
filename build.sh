@@ -24,9 +24,9 @@ fi
 # chroot_exec takes $1 as the rootfs path. the rest is taken as arguments for the shell.
 chroot_exec() {
     if [ "$1" = "$CHROOT32_DIR" ]; then
-      proot -S "$1" -0 "/bin/qemu-i386-static /bin/sh -c \"${*:2}\""
+      proot -S "$1" -0 /bin/qemu-i386-static /bin/sh -c "${*:2}"
     else
-      proot -S "$1" -0 "/bin/sh -c \"${*:2}\""
+      proot -S "$1" -0 /bin/sh -c "${*:2}"
     fi
 }
 
@@ -46,6 +46,25 @@ if [ ! -d "$CHROOT32_DIR" ] && [ ! -d "$CHROOT64_DIR" ]; then
 
   sudo debootstrap --arch i386 buster "$CHROOT32_DIR" http://deb.debian.org/debian/
   sudo debootstrap --arch amd64 buster "$CHROOT64_DIR" http://deb.debian.org/debian/
+
+  echo "Verifying that the chroot dirs are not empty..."
+
+  if [ -z "$(ls "$CHROOT32_DIR")" ]; then 
+    echo "FAIL: $CHROOT32_DIR is empty. debootstrap didn't work. Fix this." && exit 3;
+  else
+    echo "PASS: $CHROOT32_DIR has contents. printing contents."
+    ls -al "$CHROOT32_DIR"
+    sleep 2;
+  fi
+
+
+  if [ -z "$(ls "$CHROOT64_DIR")" ]; then 
+    echo "FAIL: $CHROOT64_DIR is empty. debootstrap didn't work. Fix this." && exit 3;
+  else
+    echo "PASS: $CHROOT32_DIR has contents. printing contents."
+    ls -al "$CHROOT32_DIR"
+    sleep 2;
+  fi
 
   echo "Copying QEMU binary to $CHROOT32_DIR. Please Authorize."
   sudo cp -Rf "$(command -v qemu-i386-static)" "$CHROOT32_DIR/bin"
