@@ -24,9 +24,9 @@ fi
 # chroot_exec takes $1 as the rootfs path. the rest is taken as arguments for the shell.
 chroot_exec() {
     if [ "$1" = "$CHROOT32_DIR" ]; then
-      proot -S "$1" -0 "/bin/qemu-i386-static /usr/bin/env -i HOME=/root TERM=xterm-256color PATH=/bin:/usr/bin:/sbin:/usr/sbin:/bin /bin/sh -c ${*:2}"
+      proot -S "$1" -0 "/bin/qemu-i386-static /bin/sh -c \"${*:2}\""
     else
-      proot -S "$1" -0 "/usr/bin/env -i HOME=/root TERM=xterm-256color PATH=/bin:/usr/bin:/sbin:/usr/sbin:/bin /bin/sh -c ${*:2}"
+      proot -S "$1" -0 "/bin/sh -c \"${*:2}\""
     fi
 }
 
