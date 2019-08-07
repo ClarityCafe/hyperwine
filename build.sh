@@ -23,7 +23,11 @@ fi
 
 # chroot_exec takes $1 as the rootfs path. the rest is taken as arguments for the shell.
 chroot_exec() {
-    proot -S "$1" -0 -q "/bin/sh -c ${*:2}"
+    if [ "$1" = "$CHROOT32_DIR" ]; then
+      proot -S "$1" -0 "/bin/qemu-i386-static /bin/sh -c ${*:2}"
+    else
+      proot -S "$1" -0 "/bin/sh -c ${*:2}"
+    fi
 }
 
 echo "Running Git submodule update. This shouldn't take long."
@@ -42,6 +46,8 @@ if [ ! -d "$CHROOT32_DIR" ] && [ ! -d "$CHROOT64_DIR" ]; then
 
   sudo debootstrap --arch i386 buster "$CHROOT32_DIR" http://deb.debian.org/debian/
   sudo debootstrap --arch amd64 buster "$CHROOT64_DIR" http://deb.debian.org/debian/
+
+  cp -Rf "$(command -v qemu-i386-static)" "$CHROOT32_DIR/bin"
 
   chroot_exec "$CHROOT32_DIR" apt-get install -y xserver-xorg-dev libfreetype6-dev && mkdir /mnt/hyperwine
   chroot_exec "$CHROOT64_DIR" apt-get install -y xserver-xorg-dev libfreetype6-dev && mkdir /mnt/hyperwine
