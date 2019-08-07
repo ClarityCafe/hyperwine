@@ -23,7 +23,7 @@ fi
 
 # chroot_exec takes $1 as the rootfs path. the rest is taken as arguments for the shell.
 chroot_exec() {
-    proot -S "$1" -0 -q "/bin/bash -c ${*:2}"
+    proot -S "$1" -0 -q "/bin/sh -c ${*:2}"
 }
 
 echo "Running Git submodule update. This shouldn't take long."
