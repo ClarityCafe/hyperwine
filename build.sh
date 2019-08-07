@@ -55,8 +55,14 @@ if [ ! -d "$CHROOT32_DIR" ] && [ ! -d "$CHROOT64_DIR" ]; then
 
   sudo mount --bind "$BASE_DIR" "$CHROOT32_DIR/mnt/hyperwine"
   sudo mount --bind "$BASE_DIR" "$CHROOT64_DIR/mnt/hyperwine"
-elif [ -d "$CHROOT32_DIR" ] && [ -d "$CHROOT64_DIR" ]; then
-  echo "Chroot already initialized. Skipping."
+else
+  echo "Chroot already initialized. Running additional setup."
+
+  chroot_exec "$CHROOT32_DIR" apt-get install -y xserver-xorg-dev libfreetype6-dev && mkdir /mnt/hyperwine
+  chroot_exec "$CHROOT64_DIR" apt-get install -y xserver-xorg-dev libfreetype6-dev && mkdir /mnt/hyperwine
+
+  sudo mount --bind "$BASE_DIR" "$CHROOT32_DIR/mnt/hyperwine"
+  sudo mount --bind "$BASE_DIR" "$CHROOT64_DIR/mnt/hyperwine"
 fi
 
 echo "Chroot done. Now building hyperwine:"
