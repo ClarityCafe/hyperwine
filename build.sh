@@ -24,9 +24,13 @@ fi
 # chroot_exec takes $1 as the rootfs path. the rest is taken as arguments for the shell.
 chroot_exec() {
     if [ "$1" = "$CHROOT32_DIR" ]; then
-      proot -S "$1" -0 /bin/qemu-i386-static /bin/sh -c "${*:2}"
+      proot -S "$1" -0 /bin/sh -c "${*:2}" | while read -r line; do
+        echo "[CHROOT-32] $line"
+      done
     else
-      proot -S "$1" -0 /bin/sh -c "${*:2}"
+      proot -S "$1" -0 /bin/sh -c "${*:2}" | while read -r line; do
+       echo "[CHROOT-64] $line"
+      done
     fi
 }
 
@@ -44,8 +48,17 @@ if [ ! -d "$CHROOT32_DIR" ] && [ ! -d "$CHROOT64_DIR" ]; then
   mkdir -p "$CHROOT32_DIR"
   mkdir -p "$CHROOT64_DIR"
 
-  sudo debootstrap --arch i386 buster "$CHROOT32_DIR" http://deb.debian.org/debian/
-  sudo debootstrap --arch amd64 buster "$CHROOT64_DIR" http://deb.debian.org/debian/
+  sudo debootstrap --arch i386 buster "$CHROOT32_DIR" http://deb.debian.org/debian/ | while read -r line; do
+    echo "[BOOTSTRAP-32] $line"
+  done
+  sudo debootstrap --arch amd64 buster "$CHROOT64_DIR" http://deb.debian.org/debian/ | while read -r line; do
+    echo "[BOOTSTRAP-64] $line"
+  done
+
+  echo "Fixing permissiong for the chroots, please be patient."
+
+  sudo chown -R "$(id -u)":"$(id -g)" "$CHROOT32_DIR"
+  sudo chown -R "$(id -u)":"$(id -g)" "$CHROOT64_DIR"
 
   echo "Verifying that the chroot dirs are not empty..."
 
