@@ -4,7 +4,7 @@
 # Licensed under MIT
 
 HYPERWINE_VERSION="0.0.0"
-DIR="$(cd "$(dirname "$0")" ; pwd -P)"
+DIR="$(cd "$(dirname "$0")" || exit 0 ; pwd -P)"
 WINE_BIN_PATH=$DIR/bin/
 
 # TODO: add a list of included binaries in $DIR/bin

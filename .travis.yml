@@ -18,5 +18,9 @@ script:
   - bash build.sh
 
 
+cache:
+  directories:
+     - "./chroot"
+
 notifications:
   email: false
