@@ -24,10 +24,12 @@ fi
 # chroot_exec takes $1 as the rootfs path. the rest is taken as arguments for the shell.
 chroot_exec() {
     if [ "$1" = "$CHROOT32_DIR" ]; then
+      PROOT_NO_SECCOMP=1 \
       proot -S "$1" -0 /bin/qemu-i386-static /bin/sh -c "${*:2}" | while read -r line; do
         echo "[CHROOT-32] $line"
       done
     else
+      PROOT_NO_SECCOMP=1 \
       proot -S "$1" -0 /bin/sh -c "${*:2}" | while read -r line; do
        echo "[CHROOT-64] $line"
       done
